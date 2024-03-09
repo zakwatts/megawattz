@@ -10,3 +10,4 @@ longform:
     - Hi
   ignoredFiles: []
 ---
+this is my folder [[content/MegaWattz/Index|Index]]
