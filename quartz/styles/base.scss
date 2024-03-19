@@ -4,6 +4,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: none;
   text-size-adjust: none;
   overflow-x: hidden;
   width: 100vw;
@@ -26,7 +27,7 @@ section {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--tertiary) 60%, rgba(255, 255, 255, 0));
+  background: color-mix(in srgb, var(--tertiary) 75%, transparent);
   color: var(--darkgray);
 }
 
@@ -53,12 +54,8 @@ ul,
   }
 }
 
-strong {
-  font-weight: $semiBoldWeight;
-}
-
 a {
-  font-weight: $semiBoldWeight;
+  font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
   color: var(--secondary);
@@ -72,21 +69,11 @@ a {
     background-color: var(--highlight);
     padding: 0 0.1rem;
     border-radius: 5px;
-    line-height: 1.4rem;
 
     &:has(> img) {
       background-color: none;
       border-radius: 0;
       padding: 0;
-    }
-  }
-
-  &.external .external-icon {
-    height: 1ex;
-    margin: 0 0.15em;
-
-    > path {
-      fill: var(--dark);
     }
   }
 }
@@ -107,9 +94,15 @@ a {
 
 .page {
   @media all and (max-width: $fullPageWidth) {
-    margin: 0 auto;
-    padding: 0 1rem;
     max-width: $pageWidth;
+    @media all and (min-width: $mediumPageWidth) {
+      margin-left: calc(calc(100vw - $mediumPageWidth) / 2 + $sidePanelWidth);
+    }
+
+    @media all and (max-width: $mediumPageWidth) {
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
   }
 
   & article {
@@ -156,7 +149,18 @@ a {
       box-sizing: border-box;
       padding: 0 4rem;
       position: fixed;
-      @media all and (max-width: $fullPageWidth) {
+    }
+
+    & .sidebar.left {
+      left: calc(calc(100vw - $fullPageWidth) / 2);
+
+      @media all and (max-width: $fullPageWidth) and (min-width: $mediumPageWidth) {
+        left: calc(calc(100vw - $mediumPageWidth) / 2);
+      }
+
+      @media all and (max-width: $mediumPageWidth) {
+        gap: 0;
+        align-items: center;
         position: initial;
         flex-direction: row;
         padding: 0;
@@ -165,21 +169,18 @@ a {
       }
     }
 
-    & .sidebar.left {
-      left: calc(calc(100vw - $pageWidth) / 2 - $sidePanelWidth);
-      @media all and (max-width: $fullPageWidth) {
-        gap: 0;
-        align-items: center;
-      }
-    }
-
     & .sidebar.right {
       right: calc(calc(100vw - $pageWidth) / 2 - $sidePanelWidth);
-      flex-wrap: wrap;
+      @media all and (max-width: $fullPageWidth) {
+        position: initial;
+        flex-direction: row;
+        padding: 0;
+        width: initial;
+        margin-top: 2rem;
+      }
       & > * {
         @media all and (max-width: $fullPageWidth) {
           flex: 1;
-          min-width: 140px;
         }
       }
     }
@@ -199,6 +200,7 @@ a {
     margin-left: auto;
     margin-right: auto;
     width: $pageWidth;
+
     @media all and (max-width: $fullPageWidth) {
       width: initial;
       margin-left: 0;
@@ -263,9 +265,11 @@ thead {
   font-weight: revert;
   margin-bottom: 0;
 
-  article > & > a[role="anchor"] {
+  article > & > a {
     color: var(--dark);
-    background-color: transparent;
+    &.internal {
+      background-color: transparent;
+    }
   }
 }
 
@@ -280,6 +284,7 @@ h6 {
     opacity: 0;
     transition: opacity 0.2s ease;
     transform: translateY(-0.1rem);
+    display: inline-block;
     font-family: var(--codeFont);
     user-select: none;
   }
@@ -358,7 +363,6 @@ pre {
     counter-increment: line 0;
     display: grid;
     padding: 0.5rem 0;
-    overflow-x: scroll;
 
     & [data-highlighted-chars] {
       background-color: var(--highlight);
