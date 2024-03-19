@@ -1,7 +1,7 @@
 ---
 title: Welcome to Quartz
 ---
-[[content/Test 123|Test 123]]
+
 
 [[I'm making jewellery]]
 
